@@ -62,6 +62,10 @@ npm run start:prod
 
 A API estará disponível em `http://localhost:3000`.
 
+## Documentação da API
+
+Acesse `http://localhost:3000/docs` para ver a documentação interativa (Swagger).
+
 ## Endpoints principais
 
 | Recurso | Endpoints |
