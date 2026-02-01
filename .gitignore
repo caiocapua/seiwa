@@ -1,0 +1,46 @@
+# Dependências
+node_modules/
+.claude
+
+# Build
+dist/
+build/
+
+# Arquivos de ambiente (nunca commitar!)
+.env
+.env.local
+.env.*.local
+
+# Database SQLite local
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Prisma
+/generated/prisma
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Testes
+coverage/
+
+# Cache
+.cache/
+*.tsbuildinfo
