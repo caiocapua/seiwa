@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Medico {
+  id            String     @id @default(uuid())
+  nome          String
+  crm           String     @unique
+  especialidade String?
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+  producoes     Producao[]
+  repasses      Repasse[]
+
+  @@map("medicos")
+}
+
+model Producao {
+  id        String   @id @default(uuid())
+  medicoId  String   @map("medico_id")
+  hospital  String
+  valor     Float
+  data      DateTime
+  descricao String?
+  createdAt DateTime @default(now()) @map("created_at")
+  medico    Medico   @relation(fields: [medicoId], references: [id])
+
+  @@map("producoes")
+}
+
+model Repasse {
+  id        String   @id @default(uuid())
+  medicoId  String   @map("medico_id")
+  hospital  String
+  valor     Float
+  data      DateTime
+  status    String   @default("pendente")
+  descricao String?
+  createdAt DateTime @default(now()) @map("created_at")
+  medico    Medico   @relation(fields: [medicoId], references: [id])
+
+  @@map("repasses")
+}
