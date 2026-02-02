@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Repasse } from '../../../domain/entities';
 import { RepasseStatus } from '../../../domain/enums';
-import { FindRepasseFilters, IRepasseRepository } from '../../../domain/repositories';
+import {
+  FindRepasseFilters,
+  IRepasseRepository,
+  PaginatedResult,
+  PaginationParams,
+} from '../../../domain/repositories';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -33,13 +38,29 @@ export class PrismaRepasseRepository implements IRepasseRepository {
     return data ? this.toDomain(data) : null;
   }
 
-  async findAll(filters?: FindRepasseFilters): Promise<Repasse[]> {
-    const data = await this.prisma.repasse.findMany({
-      where: this.buildWhereClause(filters),
-      orderBy: { data: 'desc' },
-    });
+  async findAll(
+    filters?: FindRepasseFilters,
+    pagination?: PaginationParams,
+  ): Promise<PaginatedResult<Repasse>> {
+    const page = pagination?.page ?? 1;
+    const limit = pagination?.limit ?? 10;
+    const skip = (page - 1) * limit;
+    const where = this.buildWhereClause(filters);
 
-    return data.map(this.toDomain);
+    const [data, total] = await Promise.all([
+      this.prisma.repasse.findMany({
+        where,
+        orderBy: { data: 'desc' },
+        skip,
+        take: limit,
+      }),
+      this.prisma.repasse.count({ where }),
+    ]);
+
+    return {
+      data: data.map((d) => this.toDomain(d)),
+      total,
+    };
   }
 
   async update(repasse: Repasse): Promise<Repasse> {

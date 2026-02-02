@@ -1,5 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IMedicoRepository, MEDICO_REPOSITORY } from '../../../domain/repositories';
+import {
+  IMedicoRepository,
+  MEDICO_REPOSITORY,
+} from '../../../domain/repositories';
+import { PaginatedResultDto, PaginationDto } from '../../dtos/common';
 import { MedicoOutputDto } from '../../dtos/medico';
 
 @Injectable()
@@ -9,8 +13,19 @@ export class ListMedicosUseCase {
     private readonly medicoRepository: IMedicoRepository,
   ) {}
 
-  async execute(): Promise<MedicoOutputDto[]> {
-    const medicos = await this.medicoRepository.findAll();
-    return medicos.map(MedicoOutputDto.fromEntity);
+  async execute(
+    pagination?: PaginationDto,
+  ): Promise<PaginatedResultDto<MedicoOutputDto>> {
+    const page = pagination?.page ?? 1;
+    const limit = pagination?.limit ?? 10;
+
+    const result = await this.medicoRepository.findAll({ page, limit });
+
+    return PaginatedResultDto.create({
+      data: result.data.map((m) => MedicoOutputDto.fromEntity(m)),
+      total: result.total,
+      page,
+      limit,
+    });
   }
 }

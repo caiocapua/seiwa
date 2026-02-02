@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Producao } from '../../../domain/entities';
-import { FindProducaoFilters, IProducaoRepository } from '../../../domain/repositories';
+import {
+  FindProducaoFilters,
+  IProducaoRepository,
+  PaginatedResult,
+  PaginationParams,
+} from '../../../domain/repositories';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -31,13 +36,29 @@ export class PrismaProducaoRepository implements IProducaoRepository {
     return data ? this.toDomain(data) : null;
   }
 
-  async findAll(filters?: FindProducaoFilters): Promise<Producao[]> {
-    const data = await this.prisma.producao.findMany({
-      where: this.buildWhereClause(filters),
-      orderBy: { data: 'desc' },
-    });
+  async findAll(
+    filters?: FindProducaoFilters,
+    pagination?: PaginationParams,
+  ): Promise<PaginatedResult<Producao>> {
+    const page = pagination?.page ?? 1;
+    const limit = pagination?.limit ?? 10;
+    const skip = (page - 1) * limit;
+    const where = this.buildWhereClause(filters);
 
-    return data.map(this.toDomain);
+    const [data, total] = await Promise.all([
+      this.prisma.producao.findMany({
+        where,
+        orderBy: { data: 'desc' },
+        skip,
+        take: limit,
+      }),
+      this.prisma.producao.count({ where }),
+    ]);
+
+    return {
+      data: data.map((d) => this.toDomain(d)),
+      total,
+    };
   }
 
   async sumByMedicoAndPeriod(

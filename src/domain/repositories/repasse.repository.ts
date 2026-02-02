@@ -1,5 +1,6 @@
 import { Repasse } from '../entities/repasse.entity';
 import { RepasseStatus } from '../enums/repasse-status.enum';
+import { PaginatedResult, PaginationParams } from './medico.repository';
 
 export interface FindRepasseFilters {
   medicoId?: string;
@@ -12,7 +13,10 @@ export interface FindRepasseFilters {
 export interface IRepasseRepository {
   create(repasse: Repasse): Promise<Repasse>;
   findById(id: string): Promise<Repasse | null>;
-  findAll(filters?: FindRepasseFilters): Promise<Repasse[]>;
+  findAll(
+    filters?: FindRepasseFilters,
+    pagination?: PaginationParams,
+  ): Promise<PaginatedResult<Repasse>>;
   update(repasse: Repasse): Promise<Repasse>;
   sumByMedicoAndPeriod(
     medicoId: string,

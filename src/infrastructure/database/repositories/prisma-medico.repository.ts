@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Medico } from '../../../domain/entities';
-import { IMedicoRepository } from '../../../domain/repositories';
+import {
+  IMedicoRepository,
+  PaginatedResult,
+  PaginationParams,
+} from '../../../domain/repositories';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -38,12 +42,26 @@ export class PrismaMedicoRepository implements IMedicoRepository {
     return data ? this.toDomain(data) : null;
   }
 
-  async findAll(): Promise<Medico[]> {
-    const data = await this.prisma.medico.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+  async findAll(
+    pagination?: PaginationParams,
+  ): Promise<PaginatedResult<Medico>> {
+    const page = pagination?.page ?? 1;
+    const limit = pagination?.limit ?? 10;
+    const skip = (page - 1) * limit;
 
-    return data.map(this.toDomain);
+    const [data, total] = await Promise.all([
+      this.prisma.medico.findMany({
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      this.prisma.medico.count(),
+    ]);
+
+    return {
+      data: data.map((d) => this.toDomain(d)),
+      total,
+    };
   }
 
   async update(medico: Medico): Promise<Medico> {

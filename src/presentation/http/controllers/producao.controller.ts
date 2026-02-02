@@ -8,7 +8,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateProducaoDto, ListProducaoDto, ProducaoOutputDto } from '../../../application/dtos/producao';
+import {
+  CreateProducaoDto,
+  ListProducaoDto,
+  ProducaoOutputDto,
+} from '../../../application/dtos/producao';
 import {
   CreateProducaoUseCase,
   GetProducaoUseCase,
@@ -25,8 +29,15 @@ export class ProducaoController {
   ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Registrar produção', description: 'Registra uma nova produção médica' })
-  @ApiResponse({ status: 201, description: 'Produção registrada com sucesso', type: ProducaoOutputDto })
+  @ApiOperation({
+    summary: 'Registrar produção',
+    description: 'Registra uma nova produção médica',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Produção registrada com sucesso',
+    type: ProducaoOutputDto,
+  })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 404, description: 'Médico não encontrado' })
   create(@Body() dto: CreateProducaoDto) {
@@ -34,16 +45,29 @@ export class ProducaoController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Listar produções', description: 'Retorna produções com filtros opcionais' })
-  @ApiResponse({ status: 200, description: 'Lista de produções', type: [ProducaoOutputDto] })
+  @ApiOperation({
+    summary: 'Listar produções',
+    description: 'Retorna produções com filtros e paginação',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista paginada de produções',
+  })
   findAll(@Query() dto: ListProducaoDto) {
     return this.listProducoesUseCase.execute(dto);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Buscar produção', description: 'Retorna os dados de uma produção específica' })
+  @ApiOperation({
+    summary: 'Buscar produção',
+    description: 'Retorna os dados de uma produção específica',
+  })
   @ApiParam({ name: 'id', description: 'ID da produção' })
-  @ApiResponse({ status: 200, description: 'Dados da produção', type: ProducaoOutputDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Dados da produção',
+    type: ProducaoOutputDto,
+  })
   @ApiResponse({ status: 404, description: 'Produção não encontrada' })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.getProducaoUseCase.execute(id);

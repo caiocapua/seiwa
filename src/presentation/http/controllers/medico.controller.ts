@@ -9,7 +9,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CreateMedicoDto, MedicoOutputDto, UpdateMedicoDto } from '../../../application/dtos/medico';
+import { PaginationDto } from '../../../application/dtos/common';
+import {
+  CreateMedicoDto,
+  MedicoOutputDto,
+  UpdateMedicoDto,
+} from '../../../application/dtos/medico';
 import { GetSaldoDto, SaldoOutputDto } from '../../../application/dtos/saldo';
 import {
   CreateMedicoUseCase,
@@ -31,8 +36,15 @@ export class MedicoController {
   ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Cadastrar médico', description: 'Cadastra um novo médico no sistema' })
-  @ApiResponse({ status: 201, description: 'Médico cadastrado com sucesso', type: MedicoOutputDto })
+  @ApiOperation({
+    summary: 'Cadastrar médico',
+    description: 'Cadastra um novo médico no sistema',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Médico cadastrado com sucesso',
+    type: MedicoOutputDto,
+  })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 409, description: 'CRM já cadastrado' })
   create(@Body() dto: CreateMedicoDto) {
@@ -40,42 +52,63 @@ export class MedicoController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Listar médicos', description: 'Retorna todos os médicos cadastrados' })
-  @ApiResponse({ status: 200, description: 'Lista de médicos', type: [MedicoOutputDto] })
-  findAll() {
-    return this.listMedicosUseCase.execute();
+  @ApiOperation({
+    summary: 'Listar médicos',
+    description: 'Retorna médicos com paginação',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista paginada de médicos',
+  })
+  findAll(@Query() pagination: PaginationDto) {
+    return this.listMedicosUseCase.execute(pagination);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Buscar médico', description: 'Retorna os dados de um médico específico' })
+  @ApiOperation({
+    summary: 'Buscar médico',
+    description: 'Retorna os dados de um médico específico',
+  })
   @ApiParam({ name: 'id', description: 'ID do médico' })
-  @ApiResponse({ status: 200, description: 'Dados do médico', type: MedicoOutputDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Dados do médico',
+    type: MedicoOutputDto,
+  })
   @ApiResponse({ status: 404, description: 'Médico não encontrado' })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.getMedicoUseCase.execute(id);
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Atualizar médico', description: 'Atualiza os dados de um médico' })
+  @ApiOperation({
+    summary: 'Atualizar médico',
+    description: 'Atualiza os dados de um médico',
+  })
   @ApiParam({ name: 'id', description: 'ID do médico' })
-  @ApiResponse({ status: 200, description: 'Médico atualizado', type: MedicoOutputDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Médico atualizado',
+    type: MedicoOutputDto,
+  })
   @ApiResponse({ status: 404, description: 'Médico não encontrado' })
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() dto: UpdateMedicoDto,
-  ) {
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateMedicoDto) {
     return this.updateMedicoUseCase.execute(id, dto);
   }
 
   @Get(':id/saldo')
-  @ApiOperation({ summary: 'Consultar saldo', description: 'Retorna o saldo consolidado do médico no período' })
+  @ApiOperation({
+    summary: 'Consultar saldo',
+    description: 'Retorna o saldo consolidado do médico no período',
+  })
   @ApiParam({ name: 'id', description: 'ID do médico' })
-  @ApiResponse({ status: 200, description: 'Saldo consolidado', type: SaldoOutputDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Saldo consolidado',
+    type: SaldoOutputDto,
+  })
   @ApiResponse({ status: 404, description: 'Médico não encontrado' })
-  getSaldo(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Query() dto: GetSaldoDto,
-  ) {
+  getSaldo(@Param('id', ParseUUIDPipe) id: string, @Query() dto: GetSaldoDto) {
     return this.getSaldoMedicoUseCase.execute(id, dto);
   }
 }
