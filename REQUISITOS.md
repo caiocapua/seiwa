@@ -37,7 +37,7 @@ Sistema de API para consolidação de repasses e informações financeiras de m�
 | **Descrição** | O sistema deve permitir registrar repasses financeiros aos médicos |
 | **Dados obrigatórios** | Valor, data, hospital |
 | **Dados sugeridos** | Médico, referência da produção |
-| **Operações** | Criar, consultar, listar por médico/período |
+| **Operações** | Criar, consultar, listar por médico/período, atualizar status |
 
 ### RF04 - Consulta de Saldo Consolidado
 
@@ -101,6 +101,12 @@ Saldo = Total de Produções - Total de Repasses (apenas status "processado")
   - `processado` - repasse efetivado
   - `cancelado` - repasse cancelado
 - Status inicial ao criar: `pendente`
+- Transições permitidas:
+  - `pendente` → `processado`
+  - `pendente` → `cancelado`
+- Transições bloqueadas:
+  - `processado` → `cancelado` (não é possível cancelar um repasse já processado)
+  - `cancelado` → `processado` (não é possível processar um repasse cancelado)
 
 ---
 
@@ -204,13 +210,41 @@ Status do Repasse: pendente | processado | cancelado
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | POST | `/repasses` | Registrar repasse |
-| GET | `/repasses` | Listar repasses (filtros: medico_id, hospital, data_inicio, data_fim) |
+| GET | `/repasses` | Listar repasses (filtros: medico_id, hospital, status, data_inicio, data_fim) |
 | GET | `/repasses/:id` | Consultar repasse específico |
+| PATCH | `/repasses/:id/status` | Atualizar status do repasse |
 
 ### Saldo Consolidado
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
 | GET | `/medicos/:id/saldo` | Consultar saldo consolidado (query: data_inicio, data_fim, hospital?) |
+
+---
+
+## Paginação
+
+Todos os endpoints de listagem suportam paginação através dos parâmetros:
+
+| Parâmetro | Tipo | Padrão | Descrição |
+|-----------|------|--------|-----------|
+| `page` | number | 1 | Página atual (mínimo: 1) |
+| `limit` | number | 10 | Itens por página (mínimo: 1, máximo: 100) |
+
+**Exemplo de requisição:**
+```
+GET /medicos?page=1&limit=20
+```
+
+**Formato da resposta paginada:**
+```json
+{
+  "data": [...],
+  "total": 100,
+  "page": 1,
+  "limit": 20,
+  "totalPages": 5
+}
+```
 
 ---
 
