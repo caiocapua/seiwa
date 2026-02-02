@@ -52,7 +52,9 @@ describe('CreateMedicoUseCase', () => {
 
     medicoRepository.findByCrm.mockResolvedValue(existingMedico);
 
-    await expect(useCase.execute(dto)).rejects.toThrow(DuplicateEntityException);
+    await expect(useCase.execute(dto)).rejects.toThrow(
+      DuplicateEntityException,
+    );
     expect(medicoRepository.create).not.toHaveBeenCalled();
   });
 });

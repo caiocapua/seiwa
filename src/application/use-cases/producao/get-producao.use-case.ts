@@ -1,6 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EntityNotFoundException } from '../../../domain/exceptions';
-import { IProducaoRepository, PRODUCAO_REPOSITORY } from '../../../domain/repositories';
+import {
+  IProducaoRepository,
+  PRODUCAO_REPOSITORY,
+} from '../../../domain/repositories';
 import { ProducaoOutputDto } from '../../dtos/producao';
 
 @Injectable()

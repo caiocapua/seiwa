@@ -2,7 +2,10 @@ import { CreateRepasseUseCase } from '../../../../src/application/use-cases/repa
 import { Medico } from '../../../../src/domain/entities';
 import { RepasseStatus } from '../../../../src/domain/enums';
 import { EntityNotFoundException } from '../../../../src/domain/exceptions';
-import { IMedicoRepository, IRepasseRepository } from '../../../../src/domain/repositories';
+import {
+  IMedicoRepository,
+  IRepasseRepository,
+} from '../../../../src/domain/repositories';
 
 describe('CreateRepasseUseCase', () => {
   let useCase: CreateRepasseUseCase;
@@ -40,7 +43,7 @@ describe('CreateRepasseUseCase', () => {
     const dto = {
       medicoId,
       hospital: 'Hospital A',
-      valor: 2000.00,
+      valor: 2000.0,
       data: '2024-01-20',
       descricao: 'Repasse mensal',
     };
@@ -52,7 +55,7 @@ describe('CreateRepasseUseCase', () => {
 
     expect(result.medicoId).toBe(medicoId);
     expect(result.hospital).toBe('Hospital A');
-    expect(result.valor).toBe(2000.00);
+    expect(result.valor).toBe(2000.0);
     expect(result.status).toBe(RepasseStatus.PENDENTE);
     expect(result.id).toBeDefined();
   });
@@ -61,7 +64,7 @@ describe('CreateRepasseUseCase', () => {
     const dto = {
       medicoId: 'medico-inexistente',
       hospital: 'Hospital A',
-      valor: 2000.00,
+      valor: 2000.0,
       data: '2024-01-20',
     };
 

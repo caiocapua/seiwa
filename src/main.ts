@@ -23,7 +23,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Seiwa API')
-    .setDescription('API para consolidação de repasses e informações financeiras de médicos')
+    .setDescription(
+      'API para consolidação de repasses e informações financeiras de médicos',
+    )
     .setVersion('1.0')
     .addTag('Médicos', 'Gerenciamento de médicos')
     .addTag('Produções', 'Registro de produções médicas')

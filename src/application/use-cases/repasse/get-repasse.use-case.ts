@@ -1,6 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EntityNotFoundException } from '../../../domain/exceptions';
-import { IRepasseRepository, REPASSE_REPOSITORY } from '../../../domain/repositories';
+import {
+  IRepasseRepository,
+  REPASSE_REPOSITORY,
+} from '../../../domain/repositories';
 import { RepasseOutputDto } from '../../dtos/repasse';
 
 @Injectable()

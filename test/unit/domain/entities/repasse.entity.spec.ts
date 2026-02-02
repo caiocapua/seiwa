@@ -7,7 +7,7 @@ describe('Repasse Entity', () => {
     const repasse = new Repasse({
       medicoId: 'medico-123',
       hospital: 'Hospital A',
-      valor: 1500.00,
+      valor: 1500.0,
       data: new Date('2024-01-15'),
     });
 
@@ -18,7 +18,7 @@ describe('Repasse Entity', () => {
     const repasse = new Repasse({
       medicoId: 'medico-123',
       hospital: 'Hospital A',
-      valor: 1500.00,
+      valor: 1500.0,
       data: new Date('2024-01-15'),
     });
 
@@ -31,7 +31,7 @@ describe('Repasse Entity', () => {
     const repasse = new Repasse({
       medicoId: 'medico-123',
       hospital: 'Hospital A',
-      valor: 1500.00,
+      valor: 1500.0,
       data: new Date('2024-01-15'),
     });
 
@@ -44,7 +44,7 @@ describe('Repasse Entity', () => {
     const repasse = new Repasse({
       medicoId: 'medico-123',
       hospital: 'Hospital A',
-      valor: 1500.00,
+      valor: 1500.0,
       data: new Date('2024-01-15'),
       status: RepasseStatus.CANCELADO,
     });
@@ -56,7 +56,7 @@ describe('Repasse Entity', () => {
     const repasse = new Repasse({
       medicoId: 'medico-123',
       hospital: 'Hospital A',
-      valor: 1500.00,
+      valor: 1500.0,
       data: new Date('2024-01-15'),
       status: RepasseStatus.PROCESSADO,
     });

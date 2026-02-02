@@ -1,7 +1,10 @@
 import { CreateProducaoUseCase } from '../../../../src/application/use-cases/producao';
 import { Medico } from '../../../../src/domain/entities';
 import { EntityNotFoundException } from '../../../../src/domain/exceptions';
-import { IMedicoRepository, IProducaoRepository } from '../../../../src/domain/repositories';
+import {
+  IMedicoRepository,
+  IProducaoRepository,
+} from '../../../../src/domain/repositories';
 
 describe('CreateProducaoUseCase', () => {
   let useCase: CreateProducaoUseCase;
@@ -38,7 +41,7 @@ describe('CreateProducaoUseCase', () => {
     const dto = {
       medicoId,
       hospital: 'Hospital A',
-      valor: 1500.50,
+      valor: 1500.5,
       data: '2024-01-15',
       descricao: 'Consulta',
     };
@@ -50,7 +53,7 @@ describe('CreateProducaoUseCase', () => {
 
     expect(result.medicoId).toBe(medicoId);
     expect(result.hospital).toBe('Hospital A');
-    expect(result.valor).toBe(1500.50);
+    expect(result.valor).toBe(1500.5);
     expect(result.descricao).toBe('Consulta');
     expect(result.id).toBeDefined();
   });
@@ -59,7 +62,7 @@ describe('CreateProducaoUseCase', () => {
     const dto = {
       medicoId: 'medico-inexistente',
       hospital: 'Hospital A',
-      valor: 1500.50,
+      valor: 1500.5,
       data: '2024-01-15',
     };
 

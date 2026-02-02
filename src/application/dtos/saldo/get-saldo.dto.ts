@@ -1,8 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsDateString, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsDateString,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class GetSaldoDto {
-  @ApiProperty({ description: 'Data inicial do período', example: '2024-01-01' })
+  @ApiProperty({
+    description: 'Data inicial do período',
+    example: '2024-01-01',
+  })
   @IsDateString({}, { message: 'dataInicio deve ser uma data válida' })
   @IsNotEmpty({ message: 'dataInicio é obrigatória' })
   dataInicio: string;
@@ -12,7 +20,10 @@ export class GetSaldoDto {
   @IsNotEmpty({ message: 'dataFim é obrigatória' })
   dataFim: string;
 
-  @ApiPropertyOptional({ description: 'Filtrar por hospital específico', example: 'Hospital São Paulo' })
+  @ApiPropertyOptional({
+    description: 'Filtrar por hospital específico',
+    example: 'Hospital São Paulo',
+  })
   @IsString()
   @IsOptional()
   hospital?: string;

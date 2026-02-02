@@ -1,6 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { EntityNotFoundException } from '../../../domain/exceptions';
-import { IMedicoRepository, MEDICO_REPOSITORY } from '../../../domain/repositories';
+import {
+  IMedicoRepository,
+  MEDICO_REPOSITORY,
+} from '../../../domain/repositories';
 import { MedicoOutputDto } from '../../dtos/medico';
 
 @Injectable()

@@ -1,7 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Medico } from '../../../domain/entities';
 import { DuplicateEntityException } from '../../../domain/exceptions';
-import { IMedicoRepository, MEDICO_REPOSITORY } from '../../../domain/repositories';
+import {
+  IMedicoRepository,
+  MEDICO_REPOSITORY,
+} from '../../../domain/repositories';
 import { CreateMedicoDto, MedicoOutputDto } from '../../dtos/medico';
 
 @Injectable()
