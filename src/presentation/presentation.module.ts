@@ -16,6 +16,7 @@ import {
   CreateRepasseUseCase,
   GetRepasseUseCase,
   ListRepassesUseCase,
+  UpdateRepasseStatusUseCase,
 } from '../application/use-cases/repasse';
 import { DatabaseModule } from '../infrastructure/database/database.module';
 import {
@@ -48,6 +49,7 @@ import { DomainExceptionFilter } from './http/filters';
     CreateRepasseUseCase,
     GetRepasseUseCase,
     ListRepassesUseCase,
+    UpdateRepasseStatusUseCase,
   ],
 })
 export class PresentationModule {}

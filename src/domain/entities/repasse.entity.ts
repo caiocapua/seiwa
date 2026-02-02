@@ -72,16 +72,30 @@ export class Repasse {
 
   processar(): void {
     if (this._status === RepasseStatus.CANCELADO) {
-      throw new InvalidValueException('Não é possível processar um repasse cancelado');
+      throw new InvalidValueException(
+        'Não é possível processar um repasse cancelado',
+      );
     }
     this._status = RepasseStatus.PROCESSADO;
   }
 
   cancelar(): void {
     if (this._status === RepasseStatus.PROCESSADO) {
-      throw new InvalidValueException('Não é possível cancelar um repasse já processado');
+      throw new InvalidValueException(
+        'Não é possível cancelar um repasse já processado',
+      );
     }
     this._status = RepasseStatus.CANCELADO;
+  }
+
+  updateStatus(status: RepasseStatus): void {
+    if (status === RepasseStatus.PROCESSADO) {
+      this.processar();
+    } else if (status === RepasseStatus.CANCELADO) {
+      this.cancelar();
+    } else {
+      this._status = status;
+    }
   }
 
   private validateMedicoId(medicoId: string): void {
